@@ -1,0 +1,9 @@
+{
+  "name": "hello-gl",
+  "version": "0.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "devDependencies": {
+    "browserify": "~3.30.2"
+  }
+}
