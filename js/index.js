@@ -2,6 +2,8 @@ var shaders = require('../dist/shaders');
 
 // Get WebGL context
 var canvas = document.getElementById('canvas');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 var gl = canvas.getContext('webgl');
 
 var vertexShader = gl.createShader(gl.VERTEX_SHADER);
