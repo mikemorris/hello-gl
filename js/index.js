@@ -24,14 +24,12 @@ gl.enableVertexAttribArray(vertexPositionAttribute);
 var vertexBuffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
 
-var vertices = [
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
   1.0,  1.0,
   -1.0,  1.0,
   1.0, -1.0,
   -1.0, -1.0
-];
-
-gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+]), gl.STATIC_DRAW);
 
 gl.vertexAttribPointer(vertexPositionAttribute, 2, gl.FLOAT, false, 0, 0);
 gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
