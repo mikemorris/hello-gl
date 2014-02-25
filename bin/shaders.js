@@ -3,7 +3,7 @@
 
 var fs = require('fs');
 var path = require('path');
-var glslunit = require('../lib/glsl-compiler-min');
+var glslunit = require('./glsl-compiler-min');
 
 var name;
 var shaders = {};
