@@ -42,6 +42,9 @@ function render(image) {
 
   var matrixLocation = gl.getUniformLocation(program, 'u_matrix');
 
+  var textureSizeLocation = gl.getUniformLocation(program, 'u_textureSize');
+  gl.uniform2f(textureSizeLocation, image.width, image.height);
+
   var vertexBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
   gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
