@@ -45,6 +45,14 @@ function render(image) {
   var textureSizeLocation = gl.getUniformLocation(program, 'u_textureSize');
   gl.uniform2f(textureSizeLocation, image.width, image.height);
 
+  var kernelLocation = gl.getUniformLocation(program, 'u_kernel');
+  var edgeDetectKernel = [
+    -1, -1, -1,
+    -1, 8, -1,
+    -1, -1, -1
+  ];
+  gl.uniform1fv(kernelLocation, edgeDetectKernel);
+
   var vertexBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
   gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
