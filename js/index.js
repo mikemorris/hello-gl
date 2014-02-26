@@ -42,7 +42,7 @@ setGeometry(gl);
 
 var colorBuffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
-gl.vertexAttribPointer(colorLocation, 4, gl.FLOAT, false, 0, 0);
+gl.vertexAttribPointer(colorLocation, 4, gl.UNSIGNED_BYTE, true, 0, 0);
 setColors(gl);
 
 drawScene();
@@ -73,13 +73,13 @@ function setGeometry(gl) {
 function setColors(gl) {
   gl.bufferData(
     gl.ARRAY_BUFFER,
-    new Float32Array([
-      Math.random(), Math.random(), Math.random(), 1,
-      Math.random(), Math.random(), Math.random(), 1,
-      Math.random(), Math.random(), Math.random(), 1,
-      Math.random(), Math.random(), Math.random(), 1,
-      Math.random(), Math.random(), Math.random(), 1,
-      Math.random(), Math.random(), Math.random(), 1
+    new Uint8Array([
+      Math.random() * 255, Math.random()* 255, Math.random() * 255, 255,
+      Math.random() * 255, Math.random()* 255, Math.random() * 255, 255,
+      Math.random() * 255, Math.random()* 255, Math.random() * 255, 255,
+      Math.random() * 255, Math.random()* 255, Math.random() * 255, 255,
+      Math.random() * 255, Math.random()* 255, Math.random() * 255, 255,
+      Math.random() * 255, Math.random()* 255, Math.random() * 255, 255
     ]),
     gl.STATIC_DRAW);
 }
