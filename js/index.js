@@ -42,10 +42,18 @@ function render(images) {
   var vertexShader = gl.createShader(gl.VERTEX_SHADER);
   gl.shaderSource(vertexShader, shaders.texture.vertex);
   gl.compileShader(vertexShader);
+  var vertexSuccess = gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS);
+  if (!vertexSuccess) {
+    throw "could not compile shader:" + gl.getShaderInfoLog(vertexShader);
+  }
 
   var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
   gl.shaderSource(fragmentShader, shaders.texture.fragment);
   gl.compileShader(fragmentShader);
+  var fragmentSuccess = gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS);
+  if (!fragmentSuccess) {
+    throw "could not compile shader:" + gl.getShaderInfoLog(fragmentShader);
+  }
 
   var program = gl.createProgram();
   gl.attachShader(program, vertexShader);
