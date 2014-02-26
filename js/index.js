@@ -13,11 +13,11 @@ var gl = canvas.getContext('webgl', {
 });
 
 var vertexShader = gl.createShader(gl.VERTEX_SHADER);
-gl.shaderSource(vertexShader, shaders.shader.vertex);
+gl.shaderSource(vertexShader, shaders.varying.vertex);
 gl.compileShader(vertexShader);
 
 var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
-gl.shaderSource(fragmentShader, shaders.shader.fragment);
+gl.shaderSource(fragmentShader, shaders.varying.fragment);
 gl.compileShader(fragmentShader);
 
 var program = gl.createProgram();
@@ -31,15 +31,6 @@ var positionLocation = gl.getAttribLocation(program, 'a_position');
 gl.enableVertexAttribArray(positionLocation);
 
 var matrixLocation = gl.getUniformLocation(program, 'u_matrix');
-var translation = [
-    randomInt(canvas.width - 100),
-    randomInt(canvas.height - 150)
-];
-var angleInDegrees = -30;
-var scale = [2, 2];
-
-// Fragment shader
-var colorLocation = gl.getUniformLocation(program, 'u_color');
 
 var buffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
@@ -52,55 +43,19 @@ drawScene();
 function drawScene() {
   gl.clear(gl.COLOR_BUFFER_BIT);
 
-  var moveOriginMatrix = libmatrix.makeTranslation(-50, -75);
-  var translationMatrix = libmatrix.makeTranslation(translation[0], translation[1]);
-  var rotationMatrix = libmatrix.makeRotationDegrees(angleInDegrees);
-  var scaleMatrix = libmatrix.makeScale(scale[0], scale[1]);
-  var projectionMatrix = libmatrix.make2DProjection(canvas.width, canvas.height);
-
   var matrix = libmatrix.makeIdentity();
-  matrix = libmatrix.matrixMultiply(moveOriginMatrix, scaleMatrix);
-  matrix = libmatrix.matrixMultiply(matrix, rotationMatrix);
-  matrix = libmatrix.matrixMultiply(matrix, translationMatrix);
-  matrix = libmatrix.matrixMultiply(matrix, projectionMatrix);
-
   gl.uniformMatrix3fv(matrixLocation, false, matrix);
 
-  gl.uniform4f(colorLocation, Math.random(), Math.random(), Math.random(), 1);
-
-  gl.drawArrays(gl.TRIANGLES, 0, 18);
-}
-
-function randomInt(range) {
-  return Math.floor(Math.random() * range);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
 }
 
 function setGeometry(gl) {
   gl.bufferData(
     gl.ARRAY_BUFFER,
     new Float32Array([
-      // left column
-      0, 0,
-      30, 0,
-      0, 150,
-      0, 150,
-      30, 0,
-      30, 150,
-
-      // top rung
-      30, 0,
-      100, 0,
-      30, 30,
-      30, 30,
-      100, 0,
-      100, 30,
-
-      // middle rung
-      30, 60,
-      67, 60,
-      30, 90,
-      30, 90,
-      67, 60,
-      67, 90]),
+      -0.5, 0.5,
+      0.5, 0.5,
+      -0.5, -0.5
+    ]),
     gl.STATIC_DRAW);
 }
