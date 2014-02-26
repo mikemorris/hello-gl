@@ -1,37 +1,12 @@
 precision mediump float;
 
-uniform sampler2D u_image;
-uniform vec2 u_textureSize;
-uniform float u_kernel[9];
+uniform sampler2D u_image0;
+uniform sampler2D u_image1;
 
 varying vec2 v_texCoord;
 
 void main() {
-  vec2 pixel = vec2(1.0, 1.0) / u_textureSize;
-  vec4 colorSum =
-    texture2D(u_image, v_texCoord + pixel * vec2(-1, -1)) * u_kernel[0] +
-    texture2D(u_image, v_texCoord + pixel * vec2(0, -1)) * u_kernel[1] +
-    texture2D(u_image, v_texCoord + pixel * vec2(1, -1)) * u_kernel[2] +
-    texture2D(u_image, v_texCoord + pixel * vec2(-1, 0)) * u_kernel[3] +
-    texture2D(u_image, v_texCoord + pixel * vec2(0, 0)) * u_kernel[4] +
-    texture2D(u_image, v_texCoord + pixel * vec2(1, 0)) * u_kernel[5] +
-    texture2D(u_image, v_texCoord + pixel * vec2(-1, 1)) * u_kernel[6] +
-    texture2D(u_image, v_texCoord + pixel * vec2(0, 1)) * u_kernel[7] +
-    texture2D(u_image, v_texCoord + pixel * vec2(1, 11)) * u_kernel[8];
-  float kernelWeight =
-    u_kernel[0] +
-    u_kernel[1] +
-    u_kernel[2] +
-    u_kernel[3] +
-    u_kernel[4] +
-    u_kernel[5] +
-    u_kernel[6] +
-    u_kernel[7] +
-    u_kernel[8];
-
-  if (kernelWeight <= 0.0) {
-    kernelWeight = 1.0;
-  }
-
-  gl_FragColor = vec4((colorSum / kernelWeight).rgb, 1);
+  vec4 color0 = texture2D(u_image0, v_texCoord);
+  vec4 color1 = texture2D(u_image1, v_texCoord);
+  gl_FragColor = color0 * color1;
 }
