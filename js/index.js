@@ -12,11 +12,11 @@ var gl = canvas.getContext('webgl', {
 });
 
 var vertexShader = gl.createShader(gl.VERTEX_SHADER);
-gl.shaderSource(vertexShader, shaders.shader.vertex);
+gl.shaderSource(vertexShader, shaders.pixel.vertex);
 gl.compileShader(vertexShader);
 
 var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
-gl.shaderSource(fragmentShader, shaders.shader.fragment);
+gl.shaderSource(fragmentShader, shaders.pixel.fragment);
 gl.compileShader(fragmentShader);
 
 var program = gl.createProgram();
@@ -25,18 +25,40 @@ gl.attachShader(program, fragmentShader);
 gl.linkProgram(program);
 gl.useProgram(program);
 
-var vertexPositionAttribute = gl.getAttribLocation(program, 'a_position');
-gl.enableVertexAttribArray(vertexPositionAttribute);
+var positionLocation = gl.getAttribLocation(program, 'a_position');
+gl.enableVertexAttribArray(positionLocation);
 
-var vertexBuffer = gl.createBuffer();
-gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+var resolutionLocation = gl.getUniformLocation(program, 'u_resolution');
+gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
 
-gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-  0.5,  0.5,
-  -0.5,  0.5,
-  0.5, -0.5,
-  -0.5, -0.5
-]), gl.STATIC_DRAW);
+var colorLocation = gl.getUniformLocation(program, 'u_color');
 
-gl.vertexAttribPointer(vertexPositionAttribute, 2, gl.FLOAT, false, 0, 0);
-gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+var buffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+for (var i = 0; i < 50; i++) {
+    bufferRect(gl, randomInt(300), randomInt(300), randomInt(300), randomInt(300));
+    gl.uniform4f(colorLocation, Math.random(), Math.random(), Math.random(), 1);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+}
+
+function randomInt(range) {
+  return Math.floor(Math.random() * range);
+}
+
+function bufferRect(gl, x, y, width, height) {
+  var x1 = x;
+  var x2 = x + width;
+  var y1 = y;
+  var y2 = y + height;
+
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+    x1, y1,
+    x2, y1,
+    x1, y2,
+    x1, y2,
+    x2, y1,
+    x2, y2
+  ]), gl.STATIC_DRAW);
+}
