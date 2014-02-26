@@ -31,12 +31,19 @@ gl.enableVertexAttribArray(positionLocation);
 var resolutionLocation = gl.getUniformLocation(program, 'u_resolution');
 gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
 
+var translationLocation = gl.getUniformLocation(program, 'u_translation');
 var translation = [
     randomInt(canvas.width - 100),
     randomInt(canvas.height - 150)
 ];
 
-var translationLocation = gl.getUniformLocation(program, 'u_translation');
+var rotationLocation = gl.getUniformLocation(program, 'u_rotation');
+var angleInDegrees = -30;
+var angleInRadians = angleInDegrees * Math.PI / 180;
+var rotation = [
+    Math.sin(angleInRadians),
+    Math.cos(angleInRadians)
+];
 
 var colorLocation = gl.getUniformLocation(program, 'u_color');
 
@@ -51,6 +58,7 @@ drawScene();
 function drawScene() {
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.uniform2fv(translationLocation, translation);
+    gl.uniform2fv(rotationLocation, rotation);
     gl.uniform4f(colorLocation, Math.random(), Math.random(), Math.random(), 1);
     gl.drawArrays(gl.TRIANGLES, 0, 18);
 }
