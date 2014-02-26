@@ -31,34 +31,60 @@ gl.enableVertexAttribArray(positionLocation);
 var resolutionLocation = gl.getUniformLocation(program, 'u_resolution');
 gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
 
+var translation = [
+    randomInt(canvas.width - 100),
+    randomInt(canvas.height - 150)
+];
+
+var translationLocation = gl.getUniformLocation(program, 'u_translation');
+
 var colorLocation = gl.getUniformLocation(program, 'u_color');
 
 var buffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
 gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
-for (var i = 0; i < 50; i++) {
-    bufferRect(gl, randomInt(300), randomInt(300), randomInt(300), randomInt(300));
+setGeometry(gl);
+
+drawScene();
+
+function drawScene() {
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.uniform2fv(translationLocation, translation);
     gl.uniform4f(colorLocation, Math.random(), Math.random(), Math.random(), 1);
-    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    gl.drawArrays(gl.TRIANGLES, 0, 18);
 }
 
 function randomInt(range) {
   return Math.floor(Math.random() * range);
 }
 
-function bufferRect(gl, x, y, width, height) {
-  var x1 = x;
-  var x2 = x + width;
-  var y1 = y;
-  var y2 = y + height;
-
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-    x1, y1,
-    x2, y1,
-    x1, y2,
-    x1, y2,
-    x2, y1,
-    x2, y2
-  ]), gl.STATIC_DRAW);
+function setGeometry(gl) {
+    gl.bufferData(
+        gl.ARRAY_BUFFER,
+        new Float32Array([
+            // left column
+            0, 0,
+            30, 0,
+            0, 150,
+            0, 150,
+            30, 0,
+            30, 150,
+   
+            // top rung
+            30, 0,
+            100, 0,
+            30, 30,
+            30, 30,
+            100, 0,
+            100, 30,
+   
+            // middle rung
+            30, 60,
+            67, 60,
+            30, 90,
+            30, 90,
+            67, 60,
+            67, 90]),
+        gl.STATIC_DRAW);
 }
