@@ -3,6 +3,7 @@ precision mediump float;
 uniform sampler2D u_image;
 uniform vec2 u_textureSize;
 uniform float u_kernel[9];
+
 varying vec2 v_texCoord;
 
 void main() {
@@ -28,9 +29,9 @@ void main() {
     u_kernel[7] +
     u_kernel[8];
 
-  if (kernelWeight <= 1.0) {
+  if (kernelWeight <= 0.0) {
     kernelWeight = 1.0;
   }
 
-  gl_FragColor = vec4((colorSum / kernelWeight).rgb, 1.0);
+  gl_FragColor = vec4((colorSum / kernelWeight).rgb, 1);
 }

@@ -1,10 +1,14 @@
 attribute vec2 a_position;
 attribute vec2 a_texCoord;
-uniform mat3 u_matrix;
+
+uniform vec2 u_resolution;
+uniform float u_flipY;
+
 varying vec2 v_texCoord;
 
 void main() {
-  gl_Position = vec4((u_matrix * vec3(a_position, 1)).xy, 0, 1);
+  vec2 position = (a_position / u_resolution) * 2.0 - 1.0;
+  gl_Position = vec4(position * vec2(1, u_flipY), 0, 1);
 
   // GPU will interpolate between points
   v_texCoord = a_texCoord;
