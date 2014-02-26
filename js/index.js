@@ -45,6 +45,9 @@ var rotation = [
     Math.cos(angleInRadians)
 ];
 
+var scaleLocation = gl.getUniformLocation(program, 'u_scale');
+var scale = [2, 2];
+
 var colorLocation = gl.getUniformLocation(program, 'u_color');
 
 var buffer = gl.createBuffer();
@@ -59,6 +62,7 @@ function drawScene() {
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.uniform2fv(translationLocation, translation);
     gl.uniform2fv(rotationLocation, rotation);
+    gl.uniform2fv(scaleLocation, scale);
     gl.uniform4f(colorLocation, Math.random(), Math.random(), Math.random(), 1);
     gl.drawArrays(gl.TRIANGLES, 0, 18);
 }
